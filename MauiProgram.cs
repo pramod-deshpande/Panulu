@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using Panulu.Data;
+
 
 namespace Panulu;
 
@@ -22,7 +22,6 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-		builder.Services.AddSingleton<WeatherForecastService>();
 
 		return builder.Build();
 	}
