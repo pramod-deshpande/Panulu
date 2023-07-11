@@ -1,6 +1,5 @@
 ﻿namespace Panulu.Data;
 
-using CloudKit;
 using Panulu.Entities;
 using SQLite;
 public class DbOperationsService {

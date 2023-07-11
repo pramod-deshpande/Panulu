@@ -1,0 +1,37 @@
+﻿@page "/task/{Id?}"
+@inject DbOperationsService db
+@inject NavigationManager navigation
+
+
+<Heading Title="Task"></Heading>
+
+<MudContainer Class="my-10 pa-10">
+    <EditForm Model="taskItem" OnSubmit="OnSubmit">
+        <CreateOrUpdateTask TaskItem="taskItem"></CreateOrUpdateTask>
+    </EditForm>
+</MudContainer>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+
+    TaskItem taskItem = new();
+
+    protected override async Task OnInitializedAsync() {
+        if (!string.IsNullOrWhiteSpace(Id)) {
+            var result = await db.GetItemAsync(int.Parse(Id));
+            if (result != null)
+                taskItem = result;
+        }
+        else {
+            taskItem = new();
+        }
+    }
+
+    private async Task OnSubmit() {
+        var result = await db.SaveItemAsync(taskItem);
+        taskItem = new();
+        //Snackbar
+        navigation.NavigateTo("/");
+
+    }
+}

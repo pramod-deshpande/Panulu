@@ -1,0 +1,43 @@
+﻿
+
+
+<MudGrid Spacing="4" Justify="Justify.Center">
+
+    <MudItem xs="12" sm="12" md="12" lg="12">
+        <MudTextField Label="Note" @bind-Value="@TaskItem.Title" />
+    </MudItem>
+
+    <MudItem xs="12" sm="12" md="12" lg="12">
+        <MudTextField Label="Note" @bind-Value="@TaskItem.Note" Lines="2" />
+    </MudItem>
+
+    <MudItem xs="12" sm="12" md="12" lg="12">
+        <MudDatePicker Label="Date" @bind-Date="@TaskItem.TaskDateTime" DisableToolbar="true" />
+    </MudItem>
+
+
+
+
+
+    @if (!string.IsNullOrEmpty(TaskItem.Title)) {
+        <MudItem xs="12" sm="12" md="12" lg="12">
+            <MudContainer Class="d-flex justify-space-between">
+                <MudButton Variant="Variant.Filled" Color=Color.Primary ButtonType="ButtonType.Submit"><MudText>Submit</MudText> </MudButton>
+                <MudButton Variant="Variant.Outlined" Color=Color.Default ButtonType="ButtonType.Reset" OnClick="Reset"><MudText>Reset</MudText> </MudButton>
+            </MudContainer>
+
+        </MudItem>
+    }
+</MudGrid>
+
+
+
+
+@code {
+
+    [Parameter] public TaskItem TaskItem { get; set; }
+
+    private void Reset() {
+        TaskItem = new();
+    }
+}

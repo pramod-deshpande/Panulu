@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using MudBlazor.Services;
+using Panulu.Data;
 
 namespace Panulu;
 
@@ -21,8 +23,9 @@ public static class MauiProgram
 		builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
+		builder.Services.AddSingleton<DbOperationsService>();
 
-
-		return builder.Build();
+        builder.Services.AddMudServices();
+        return builder.Build();
 	}
 }
