@@ -1,15 +1,17 @@
 ﻿@page "/task/{Id?}"
-@inject DbOperationsService db
+
+
 @inject NavigationManager navigation
+@inject SnackBarNotificationHelper snackbar
 
 
 <Heading Title="Task"></Heading>
 
-<MudContainer Class="my-10 pa-10">
+
     <EditForm Model="taskItem" OnSubmit="OnSubmit">
         <CreateOrUpdateTask TaskItem="taskItem"></CreateOrUpdateTask>
     </EditForm>
-</MudContainer>
+
 
 @code {
     [Parameter] public string? Id { get; set; }
@@ -28,10 +30,11 @@
     }
 
     private async Task OnSubmit() {
+        taskItem.CreationDateTime = DateTime.Now;
+        taskItem.IsCompleted = false;
         var result = await db.SaveItemAsync(taskItem);
         taskItem = new();
-        //Snackbar
+        snackbar.DisplayInfoSnackbar();
         navigation.NavigateTo("/");
-
     }
 }

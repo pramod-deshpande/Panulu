@@ -1,0 +1,53 @@
+﻿
+<style>
+
+    .style-link {
+        transition: all 0.4s ease-in-out;
+    }
+
+
+        .style-link:hover {
+            transform: scale(1.1);
+        }
+
+    .card {
+        border-radius: 15px;
+    }
+
+
+        .card:hover {
+            border: 3px solid @RandomColor.GetRandomColor();
+            border-radius: 3px;
+        }
+
+</style>
+
+
+<MudPaper Elevation="0" Outlined Class="card my-8 py-4">
+    <MudContainer Class="d-flex flex-column gap-4">
+        <MudContainer Class="d-flex justify-space-between">
+            <MudText Typo="Typo.body1" Color="Color.Dark">@project</MudText>
+
+        </MudContainer>
+        <MudContainer Class="d-flex justify-space-between">
+
+
+
+            <MudChip Size="Size.Small" Variant="Variant.Outlined" Color="CustomColor">@(project)</MudChip>
+
+            </MudContainer>
+        </MudContainer>
+    </MudPaper>
+
+
+
+
+    @code {
+    [Parameter] public string project { get; set; }
+    [Parameter] public Color CustomColor { get; set; }
+    DateTime placeholderDate = new DateTime(0001, 01, 01);
+
+    //    @onclick
+    //="@(()=>Navigation.NavigateTo($"/create/{project.Id
+    //    }"))"
+}

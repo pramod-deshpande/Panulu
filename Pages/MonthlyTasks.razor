@@ -1,0 +1,36 @@
+﻿@page "/monthly"
+
+
+
+<MudCalendar ShowDatePicker=true ShowPrevNextButtons="false" ShowWeek=false Height="500" Outlined Elevation="0" View="CalendarView.Month" ShowDay="false" Items="CalendarItems">
+
+
+    <MonthTemplate>
+        <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Color="Color.Secondary" Size="Size.Small" />
+    </MonthTemplate>
+
+
+</MudCalendar>
+
+
+
+@code {
+    List<CalendarItem> CalendarItems = new();
+    protected override async Task OnInitializedAsync() {
+        var data = await db.GetItemsAsync();
+        CalendarItems = CreateCalenderEvents(data);
+    }
+
+    private List<CalendarItem> CreateCalenderEvents(List<TaskItem> taskItems) {
+        List<CalendarItem> calendarItems = new();
+
+        foreach (var item in taskItems) {
+            CalendarItem calendarItem = new();
+            calendarItem.Start = item.TaskDateTime.HasValue ? item.TaskDateTime.Value : DateTime.Now.Date;
+            calendarItems.Add(calendarItem);
+        }
+        return calendarItems;
+    }
+
+
+}

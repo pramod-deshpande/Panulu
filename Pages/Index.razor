@@ -1,7 +1,31 @@
 ﻿@page "/"
 
-<Heading Title="Daily Tasks"></Heading>
+<Heading Title="Tasks"></Heading>
 
-Welcome to your new app.
+@if (taskItems.Any()) {
+    @foreach (var item in taskItems) {
+        <DataCard project="@item.Title"></DataCard>
+    }
+}
 
 
+
+
+
+
+
+@code{
+    List<TaskItem> taskItems = new();
+
+
+    protected override async Task OnInitializedAsync() {
+       taskItems = GetTasksForToday(await db.GetItemsAsync());
+    }
+
+    private List<TaskItem> GetTasksForToday(List<TaskItem> items) {
+
+        var today = DateTime.Now.Date;
+        return items.Where(x => x.TaskDateTime.Value.Date == today).ToList() ?? new List<TaskItem>();
+    }
+
+}
