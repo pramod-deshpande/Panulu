@@ -11,41 +11,44 @@
         }
 
     .card {
-        border-radius: 15px;
+        border: 2px solid @GenerateRandomDarkColor();
+   
     }
-
-
-        .card:hover {
-            border: 3px solid @RandomColor.GetRandomColor();
-            border-radius: 3px;
-        }
-
 </style>
 
 
-<MudPaper Elevation="0" Outlined Class="card my-8 py-4">
-    <MudContainer Class="d-flex flex-column gap-4">
-        <MudContainer Class="d-flex justify-space-between">
-            <MudText Typo="Typo.body1" Color="Color.Dark">@project</MudText>
+<MudGrid Spacing="1" Justify="Justify.Center">
 
-        </MudContainer>
-        <MudContainer Class="d-flex justify-space-between">
-
-
-
-            <MudChip Size="Size.Small" Variant="Variant.Outlined" Color="CustomColor">@(project)</MudChip>
-
+        <MudItem xs="12" sm="8" md="6" lg="12">
+            <MudCard Class="card my-3 py-3" Elevation="0" Outlined>
+            <MudContainer Class="d-flex gap-2">
+                <div class="d-flex flex-column justify-center">
+                    <MudText Typo="Typo.body1">@taskItem.Title</MudText>
+                    <MudText Typo="Typo.body2">@taskItem.Note</MudText>
+                </div>
+             
+                <MudSpacer />
+                <MudIconButton Icon="@Icons.Material.Outlined.CheckBoxOutlineBlank" />
             </MudContainer>
-        </MudContainer>
-    </MudPaper>
+            </MudCard>
+
+        </MudItem>
+    
+</MudGrid>
 
 
 
 
-    @code {
-    [Parameter] public string project { get; set; }
-    [Parameter] public Color CustomColor { get; set; }
-    DateTime placeholderDate = new DateTime(0001, 01, 01);
+
+@code {
+    [Parameter] public TaskItem taskItem { get; set; }
+
+
+    string GenerateRandomDarkColor() {
+        var random = new Random();
+        var color = String.Format("#{0:X6}", random.Next(0x1000000) & 0x7F7F7F);
+        return color;
+    }
 
     //    @onclick
     //="@(()=>Navigation.NavigateTo($"/create/{project.Id

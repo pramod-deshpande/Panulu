@@ -4,6 +4,7 @@ using MudBlazor;
 using MudBlazor.Services;
 using Panulu.Data;
 using Panulu.Helpers;
+using Panulu.Services;
 
 namespace Panulu;
 
@@ -26,6 +27,8 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 		builder.Services.AddSingleton<DbOperationsService>();
+
+		builder.Services.AddSingleton<TaskService>();
 
 		builder.Services.AddScoped<SnackBarNotificationHelper>();
 

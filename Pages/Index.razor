@@ -2,11 +2,14 @@
 
 <Heading Title="Tasks"></Heading>
 
-@if (taskItems.Any()) {
+
+    @if (taskItems.Any()) {
     @foreach (var item in taskItems) {
-        <DataCard project="@item.Title"></DataCard>
+        <DataCard taskItem="item"></DataCard>
     }
 }
+
+
 
 
 
@@ -19,7 +22,8 @@
 
 
     protected override async Task OnInitializedAsync() {
-       taskItems = GetTasksForToday(await db.GetItemsAsync());
+        await TaskService.CarryOverIncompleteTasksAsync();
+        taskItems = GetTasksForToday(await db.GetItemsAsync());
     }
 
     private List<TaskItem> GetTasksForToday(List<TaskItem> items) {

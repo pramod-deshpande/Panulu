@@ -53,7 +53,7 @@
         <PackageReference Include="Heron.MudCalendar" Version="1.0.8" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
         <PackageReference Include="MudBlazor" Version="6.7.0" />
-        <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+        <PackageReference Include="sqlite-net-pcl" Version="1.9.141-beta" />
     </ItemGroup>
 
 </Project>

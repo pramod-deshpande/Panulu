@@ -3,7 +3,7 @@
 namespace Panulu.Data; 
 public static class DatabaseConfig {
 
-    public const string DatabaseFilename = "PanuluDb.db3";
+    public const string DatabaseFilename = "Panulu.db3";
 
     public const SQLite.SQLiteOpenFlags Flags =
     // open the database in read/write mode
