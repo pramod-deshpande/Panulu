@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider Theme="CustomTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -18,3 +18,51 @@
 </MudLayout>
 
 
+@code{
+
+
+    MudTheme CustomTheme = new MudTheme() {
+
+            Typography = new Typography() {
+                Default = new Default() {
+                    FontFamily = new[] { "Montserrat", "sans-serif" }
+                },
+            },
+            PaletteDark = new PaletteDark() {
+
+                Background = "#0d1117",
+                Surface = "#161b22",
+                AppbarBackground = "#161b22",
+                DrawerBackground = "#161b22",
+
+
+                Primary = "#809A6F",
+                PrimaryLighten = "#B3CDA2",
+                PrimaryDarken = "#4D673C",
+
+                Secondary = "#896F9A",
+                SecondaryLighten = "#BCA2CD",
+                SecondaryDarken = "#563C67",
+
+
+            },
+            Palette = new Palette() {
+                Primary = "#809A6F",
+                PrimaryLighten = "#B3CDA2",
+                PrimaryDarken = "#4D673C",
+
+                Secondary = "#896F9A",
+                SecondaryLighten = "#BCA2CD",
+                SecondaryDarken = "#563C67",
+
+                Background = "#f6f4f6",
+                Surface = "#f7f7f7",
+                AppbarBackground = "#f7f7f7",
+                DrawerBackground = "#ffffff",
+                //F6F6F6
+
+
+            }
+        };
+
+}

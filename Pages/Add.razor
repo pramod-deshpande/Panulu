@@ -2,8 +2,6 @@
 
 
 @inject NavigationManager navigation
-@inject SnackBarNotificationHelper snackbar
-
 
 <Heading Title="Task"></Heading>
 
@@ -20,7 +18,7 @@
 
     protected override async Task OnInitializedAsync() {
         if (!string.IsNullOrWhiteSpace(Id)) {
-            var result = await db.GetItemAsync(int.Parse(Id));
+            var result = await Db.GetItemAsync(int.Parse(Id));
             if (result != null)
                 taskItem = result;
         }
@@ -32,9 +30,9 @@
     private async Task OnSubmit() {
         taskItem.CreationDateTime = DateTime.Now;
         taskItem.IsCompleted = false;
-        var result = await db.SaveItemAsync(taskItem);
+        var result = await Db.SaveItemAsync(taskItem);
         taskItem = new();
-        snackbar.DisplayInfoSnackbar();
+        Snackbar.DisplayInfoSnackbar();
         navigation.NavigateTo("/");
     }
 }

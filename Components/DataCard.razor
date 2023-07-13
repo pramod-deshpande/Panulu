@@ -11,7 +11,7 @@
         }
 
     .card {
-        border: 2px solid @GenerateRandomDarkColor();
+        border: 1px solid @GenerateRandomDarkColor();
    
     }
 </style>
@@ -22,13 +22,13 @@
         <MudItem xs="12" sm="8" md="6" lg="12">
             <MudCard Class="card my-3 py-3" Elevation="0" Outlined>
             <MudContainer Class="d-flex gap-2">
-                <div class="d-flex flex-column justify-center">
+                <div class="d-flex flex-column justify-center gap-2">
                     <MudText Typo="Typo.body1">@taskItem.Title</MudText>
                     <MudText Typo="Typo.body2">@taskItem.Note</MudText>
                 </div>
              
                 <MudSpacer />
-                <MudIconButton Icon="@Icons.Material.Outlined.CheckBoxOutlineBlank" />
+                <MudIconButton Icon="@Icons.Material.Outlined.CheckBoxOutlineBlank" OnClick="HandleClick" />
             </MudContainer>
             </MudCard>
 
@@ -50,7 +50,15 @@
         return color;
     }
 
-    //    @onclick
-    //="@(()=>Navigation.NavigateTo($"/create/{project.Id
-    //    }"))"
+
+    private async Task HandleClick() {
+        taskItem.CompletionDateTime = DateTime.Now;
+        taskItem.IsCompleted = true;
+        await Db.SaveItemAsync(taskItem);
+        RefreshStateHelper.CallRequestRefresh();
+        StateHasChanged();
+        Snackbar.DisplaySuccessSnackBar();
+        
+
+    }
 }

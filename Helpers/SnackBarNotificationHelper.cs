@@ -14,4 +14,12 @@ public class SnackBarNotificationHelper {
     public void DisplayInfoSnackbar() {
         _snackbar.Add(infoMessage, severity: Severity.Info);
     }
+
+    public void DisplaySuccessSnackBar() {
+        var rnd = new Random();
+        var index  = rnd.Next(Constant.TaskCompletionPhrases
+            .Count);
+        var message = Constant.TaskCompletionPhrases[index];
+        _snackbar.Add(message, severity: Severity.Success); 
+    }
 }

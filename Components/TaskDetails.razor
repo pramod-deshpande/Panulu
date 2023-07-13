@@ -1,0 +1,29 @@
+﻿<MudCard Outlined="true" Class="my-5">
+    <MudCardContent Class="d-flex flex-column">
+        <MudText Typo="Typo.body1" Color="Color.Primary">@taskItem.Title</MudText>
+        <MudText Typo="Typo.body2">@taskItem.Note</MudText>
+        <MudText Typo="Typo.overline">Task date:@(taskItem.TaskDateTime.HasValue? taskItem.TaskDateTime.Value.ToString("d"): " ")</MudText>
+        <MudText Typo="Typo.overline">Completed on:@taskItem.CompletionDateTime</MudText>
+    </MudCardContent>
+    <MudCardActions>
+        <MudContainer Class="d-flex justify-space-between">
+            <MudButton Variant="Variant.Text" Class="rounded-lg pa-3" OnClick="@(() => Navigation.NavigateTo("/"))" Size=Size.Small Color="Color.Secondary"><MudText Typo="Typo.body2">Revert</MudText></MudButton>
+                <MudButton Variant="Variant.Text" Class="rounded-lg pa-3" OnClick="HandleDeleteButton" Size="Size.Small" Color="Color.Error"><MudText Typo="Typo.body2">Delete</MudText></MudButton>
+        </MudContainer>
+    </MudCardActions>
+</MudCard>
+
+
+
+    @code{
+    [Parameter] public TaskItem taskItem { get; set; }
+
+    private async Task HandleDeleteButton() {
+
+        //Confirmation
+        await Db.DeleteItemAsync(taskItem);
+    }
+
+
+
+}

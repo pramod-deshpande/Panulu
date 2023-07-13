@@ -1,0 +1,31 @@
+﻿@page "/history"
+
+
+<Heading Title="Completed Tasks"></Heading>
+
+@if (completed.Any()) {
+    foreach (var item in completed) {
+        <TaskDetails taskItem="item"></TaskDetails>
+    }
+}
+else {
+
+    <MudText Color="Color.Secondary" Typo="Typo.subtitle2">Well, it seems you've successfully achieved a rare feat of evading any task completion! </MudText>
+}
+
+
+
+@code {
+    List<TaskItem> completed = new();
+
+    protected override async Task OnInitializedAsync() {
+        await GetCompletedTasks();
+    }
+
+    private async Task GetCompletedTasks() {
+        var tasks = await Db.GetItemsAsync();
+        if (tasks.Any(x => x.IsCompleted))
+            completed = tasks.Where(x => x.IsCompleted).ToList();
+    }
+
+}

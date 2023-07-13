@@ -17,8 +17,8 @@
 @code {
     List<CalendarItem> CalendarItems = new();
     protected override async Task OnInitializedAsync() {
-        var data = await db.GetItemsAsync();
-        CalendarItems = CreateCalenderEvents(data);
+        var data = await Db.GetItemsAsync();
+        CalendarItems = CreateCalenderEvents(data.Where(x=>!x.IsCompleted).ToList());
     }
 
     private List<CalendarItem> CreateCalenderEvents(List<TaskItem> taskItems) {
