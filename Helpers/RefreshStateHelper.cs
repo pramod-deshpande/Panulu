@@ -1,9 +1,9 @@
-﻿namespace Panulu.Helpers; 
-public static class RefreshStateHelper {
+﻿namespace Panulu.Helpers;
+public class RefreshStateHelper {
 
-    public static event Action RefreshRequested;
+    public event Action RefreshRequested;
 
-    public static void CallRequestRefresh() {
+    public void CallRequestRefresh() {
         RefreshRequested?.Invoke();
     }
 }

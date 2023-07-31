@@ -3,7 +3,7 @@
 <Heading Title="Tasks"></Heading>
 
 
-    @if (taskItems.Any()) {
+@if (taskItems.Any()) {
     @foreach (var item in taskItems) {
         <DataCard taskItem="item"></DataCard>
     }
@@ -17,19 +17,29 @@
 
 
 
-@code{
+@code {
     List<TaskItem> taskItems = new();
+    DateTime today = DateTime.Now.Date;
 
 
     protected override async Task OnInitializedAsync() {
         await TaskService.CarryOverIncompleteTasksAsync();
-        taskItems = GetTasksForToday(await Db.GetItemsAsync());
+        taskItems = await GetTasksForToday(await Db.GetItemsAsync());
+        RefreshState.RefreshRequested += StateHasChanged;
     }
 
-    private List<TaskItem> GetTasksForToday(List<TaskItem> items) {
-
-        var today = DateTime.Now.Date;
+    private async Task<List<TaskItem>> GetTasksForToday(List<TaskItem> items) {
+        await AssignDateForTasksWithoutDateAsync(items);
         return items.Where(x => x.TaskDateTime.Value.Date == today && !x.IsCompleted).ToList() ?? new List<TaskItem>();
+    }
+
+    private async Task AssignDateForTasksWithoutDateAsync(List<TaskItem> items) {
+        @foreach (var item in items) {
+            if (!item.TaskDateTime.HasValue) {
+                item.TaskDateTime = today;
+                await Db.SaveItemAsync(item);
+            }
+        }
     }
 
 }

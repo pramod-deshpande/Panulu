@@ -1,6 +1,10 @@
 ﻿@page "/monthly"
 
+<Heading Title="Monthly View"></Heading>
 
+<MudText Class="my-3" Typo="Typo.subtitle2">
+    @(count > 0 ? $"Pennding tasks: {count}" : "Embrace the freedom of the task-free zone!")
+</MudText>
 
 <MudCalendar ShowDatePicker=true ShowPrevNextButtons="false" ShowWeek=false Height="500" Outlined Elevation="0" View="CalendarView.Month" ShowDay="false" Items="CalendarItems">
 
@@ -16,8 +20,10 @@
 
 @code {
     List<CalendarItem> CalendarItems = new();
+    int count;
     protected override async Task OnInitializedAsync() {
         var data = await Db.GetItemsAsync();
+        count = data.Where(x=>!x.IsCompleted).Count();
         CalendarItems = CreateCalenderEvents(data.Where(x=>!x.IsCompleted).ToList());
     }
 

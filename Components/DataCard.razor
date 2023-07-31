@@ -12,35 +12,35 @@
 
     .card {
         border: 1px solid @GenerateRandomDarkColor();
-   
     }
 </style>
 
 
 <MudGrid Spacing="1" Justify="Justify.Center">
 
-        <MudItem xs="12" sm="8" md="6" lg="12">
-            <MudCard Class="card my-3 py-3" Elevation="0" Outlined>
+    <MudItem xs="12" sm="8" md="6" lg="12">
+        <MudCard Class="card my-3 py-3" Elevation="0" Outlined>
             <MudContainer Class="d-flex gap-2">
                 <div class="d-flex flex-column justify-center gap-2">
-                    <MudText Typo="Typo.body1">@taskItem.Title</MudText>
+                    <MudLink OnClick="@(()=> Navigation.NavigateTo($"/task/{taskItem.Id}"))" Typo="Typo.body1">@taskItem.Title</MudLink>
                     <MudText Typo="Typo.body2">@taskItem.Note</MudText>
                 </div>
-             
+               
                 <MudSpacer />
-                <MudIconButton Icon="@Icons.Material.Outlined.CheckBoxOutlineBlank" OnClick="HandleClick" />
+                <MudDivider FlexItem Vertical></MudDivider>
+                <MudIconButton Icon="@Icons.Material.Outlined.CheckBoxOutlineBlank" OnClick="HandleCheckBox" />
             </MudContainer>
-            </MudCard>
+        </MudCard>
 
-        </MudItem>
-    
+    </MudItem>
+
 </MudGrid>
 
 
 
 
 
-@code {
+ @code {
     [Parameter] public TaskItem taskItem { get; set; }
 
 
@@ -51,14 +51,14 @@
     }
 
 
-    private async Task HandleClick() {
+    private async Task HandleCheckBox()
+    {
         taskItem.CompletionDateTime = DateTime.Now;
         taskItem.IsCompleted = true;
         await Db.SaveItemAsync(taskItem);
-        RefreshStateHelper.CallRequestRefresh();
-        StateHasChanged();
         Snackbar.DisplaySuccessSnackBar();
-        
-
+        RefreshState.CallRequestRefresh();
     }
+
+
 }

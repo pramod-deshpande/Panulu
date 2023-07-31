@@ -10,7 +10,7 @@
     </MudAppBar>
     <MudMainContent>
         <div style="margin:0px; flex: 1 1 auto; padding-bottom: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/8); transition: margin 225ms cubic-bezier(0,0,.2,1) 0ms;">
-            <MudContainer MaxWidth="MaxWidth.Medium" >
+            <MudContainer MaxWidth="MaxWidth.Medium" Class="pb-16" >
                 @Body
             </MudContainer>
         </div>
@@ -46,7 +46,7 @@
 
 
             },
-            Palette = new Palette() {
+            Palette = new PaletteLight() {
                 Primary = "#809A6F",
                 PrimaryLighten = "#B3CDA2",
                 PrimaryDarken = "#4D673C",
