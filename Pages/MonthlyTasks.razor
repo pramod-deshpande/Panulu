@@ -2,41 +2,86 @@
 
 <Heading Title="Monthly View"></Heading>
 
-<MudText Class="my-3" Typo="Typo.subtitle2">
-    @(count > 0 ? $"Pennding tasks: {count}" : "Embrace the freedom of the task-free zone!")
-</MudText>
-
-<MudCalendar ShowDatePicker=true ShowPrevNextButtons="false" ShowWeek=false Height="500" Outlined Elevation="0" View="CalendarView.Month" ShowDay="false" Items="CalendarItems">
+t
 
 
-    <MonthTemplate>
-        <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Color="Color.Secondary" Size="Size.Small" />
-    </MonthTemplate>
+
+<MudCalendar ShowDatePicker=true ShowPrevNextButtons="false" ShowWeek=false Height="400" Outlined Elevation="0" View="CalendarView.Month" ShowDay="false" Items="CalendarItems" CellClicked="CellClicked">
+     <MonthTemplate>
+         <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Color="Color.Secondary" Size="Size.Small" />
+     </MonthTemplate>
+ </MudCalendar>
 
 
-</MudCalendar>
+ <MudDivider Class="mb-3 mt-5"/>
+
+ @if (!tasks.Any())
+{
+    <MudText Color="Color.Secondary" Typo="Typo.subtitle2">No tasks! </MudText>
+}
+
+<MudGrid Spacing="1" Justify="Justify.Center">
+    @foreach (var taskItem in tasks)
+    {
+        <MudItem xs="12" sm="8" md="6" lg="12">
+            <MudCard Class="card my-3 py-3" Elevation="0" Outlined>
+             <MudContainer Class="d-flex flex-column justify-center gap-2">
+                 <MudLink OnClick="@(()=> Navigation.NavigateTo($"/task/{taskItem.Id}"))" Typo="Typo.body1">@taskItem.Title</MudLink>
+                 <MudText Typo="Typo.body2">@taskItem.Note</MudText>
+             </MudContainer>
+         </MudCard>
+     </MudItem>
+    }
+</MudGrid>
+
+
+
+
+
 
 
 
 @code {
-    List<CalendarItem> CalendarItems = new();
     int count;
-    protected override async Task OnInitializedAsync() {
-        var data = await Db.GetItemsAsync();
-        count = data.Where(x=>!x.IsCompleted).Count();
-        CalendarItems = CreateCalenderEvents(data.Where(x=>!x.IsCompleted).ToList());
+    int taskCountForCurrentMonth;
+    List<CalendarItem> CalendarItems = new();
+    List<TaskItem> tasks = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var data = await GetTaskItemsAsync();
+        count = data.Count(x => !x.IsCompleted);
+        CalendarItems = CreateCalendarEvents(data.Where(x => !x.IsCompleted).ToList());
+        tasks = await GetTasksByDateAsync(DateTime.Today);
     }
 
-    private List<CalendarItem> CreateCalenderEvents(List<TaskItem> taskItems) {
+
+    private async Task<IEnumerable<TaskItem>> GetTaskItemsAsync()
+    {
+        return await Db.GetItemsAsync();
+    }
+
+    private List<CalendarItem> CreateCalendarEvents(List<TaskItem> taskItems)
+    {
         List<CalendarItem> calendarItems = new();
+        return taskItems
+    .Select(item => new CalendarItem { Start = item.TaskDateTime ?? DateTime.Now.Date })
+    .ToList();
 
-        foreach (var item in taskItems) {
-            CalendarItem calendarItem = new();
-            calendarItem.Start = item.TaskDateTime.HasValue ? item.TaskDateTime.Value : DateTime.Now.Date;
-            calendarItems.Add(calendarItem);
-        }
-        return calendarItems;
     }
 
+    private async Task<List<TaskItem>?> CellClicked(DateTime dateTime)
+    {
+        tasks = await GetTasksByDateAsync(dateTime);
+        return tasks;
+    }
+
+
+    private async Task<List<TaskItem>> GetTasksByDateAsync(DateTime dateTime)
+    {
+        var tasks = await GetTaskItemsAsync();
+        return tasks.Where(x => x.TaskDateTime?.Date == dateTime.Date).ToList();
+    }
 
 }

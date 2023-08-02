@@ -30,7 +30,7 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton<TaskService>();
 
-		builder.Services.AddSingleton<RefreshStateHelper>();
+		builder.Services.AddScoped<RefreshStateHelper>();
 
 		builder.Services.AddScoped<SnackBarNotificationHelper>();
 

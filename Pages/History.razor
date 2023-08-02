@@ -5,7 +5,7 @@
 
 @if (completed.Any()) {
     foreach (var item in completed) {
-        <TaskDetails taskItem="item"></TaskDetails>
+        <TaskDetails taskItem="item" OnTaskDeleted="HandleTaskDeleted"></TaskDetails>
     }
 }
 else {
@@ -22,10 +22,18 @@ else {
         await GetCompletedTasks();
     }
 
+
     private async Task GetCompletedTasks() {
         var tasks = await Db.GetItemsAsync();
         if (tasks.Any(x => x.IsCompleted))
             completed = tasks.Where(x => x.IsCompleted).ToList();
+    }
+
+    private async Task HandleTaskDeleted(TaskItem deletedTask)
+    {
+        completed.Remove(deletedTask);
+        await Db.DeleteItemAsync(deletedTask);
+        StateHasChanged();
     }
 
 }

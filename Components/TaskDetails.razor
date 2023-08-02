@@ -16,13 +16,29 @@
 
 
     @code{
-    [Parameter] public TaskItem taskItem { get; set; }
+    [Parameter]
+    public TaskItem taskItem { get; set; }
+
+
+    [Parameter]
+    public EventCallback<TaskItem> OnTaskDeleted { get; set; }
+
+
+    [Inject] 
+    private IDialogService DialogService { get; set; }
 
     private async Task HandleDeleteButton() {
-
-        //Confirmation
-        await Db.DeleteItemAsync(taskItem);
+        bool? result = await DialogService.ShowMessageBox(
+            "Confirm Deletion",
+            $"Delete the task \"{taskItem.Title}\" ?",
+            yesText: "Yes!", cancelText: "Cancel");
+        if (result.HasValue && result.Value)
+        {
+            await OnTaskDeleted.InvokeAsync(taskItem);
+        }
     }
+
+
 
 
 

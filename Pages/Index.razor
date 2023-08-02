@@ -5,7 +5,7 @@
 
 @if (taskItems.Any()) {
     @foreach (var item in taskItems) {
-        <DataCard taskItem="item"></DataCard>
+        <DataCard taskItem="item" OnTaskCompleted="HandleTaskCompleted"></DataCard>
     }
 }
 
@@ -25,7 +25,7 @@
     protected override async Task OnInitializedAsync() {
         await TaskService.CarryOverIncompleteTasksAsync();
         taskItems = await GetTasksForToday(await Db.GetItemsAsync());
-        RefreshState.RefreshRequested += StateHasChanged;
+      
     }
 
     private async Task<List<TaskItem>> GetTasksForToday(List<TaskItem> items) {
@@ -41,5 +41,16 @@
             }
         }
     }
+
+    private async Task HandleTaskCompleted(TaskItem completedTask)
+    {
+        completedTask.CompletionDateTime = DateTime.Now;
+        completedTask.IsCompleted = true;
+        await Db.SaveItemAsync(completedTask);
+        Snackbar.DisplaySuccessSnackBar();
+        await OnInitializedAsync();
+    }
+
+
 
 }
