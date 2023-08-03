@@ -2,12 +2,28 @@
 
 <Heading Title="Tasks"></Heading>
 
+<MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
+    <MudTabPanel Text="Today">
 
-@if (taskItems.Any()) {
-    @foreach (var item in taskItems) {
-        <DataCard taskItem="item" OnTaskCompleted="HandleTaskCompleted"></DataCard>
-    }
-}
+        @if (toadyTaskItems.Any())
+        {
+            @foreach (var item in toadyTaskItems)
+            {
+                <DataCard taskItem="item" OnTaskCompleted="HandleTaskCompleted"></DataCard>
+            }
+        }
+    </MudTabPanel>
+    <MudTabPanel Text="All">
+        @if (allTaskItems.Any())
+        {
+            @foreach (var item in allTaskItems)
+            {
+                <DataCard taskItem="item" OnTaskCompleted="HandleTaskCompleted"></DataCard>
+            }
+        }
+    </MudTabPanel>
+</MudTabs>
+
 
 
 
@@ -18,39 +34,29 @@
 
 
 @code {
-    List<TaskItem> taskItems = new();
+    List<TaskItem> toadyTaskItems = new();
+    List<TaskItem> allTaskItems = new();
     DateTime today = DateTime.Now.Date;
 
 
-    protected override async Task OnInitializedAsync() {
+    protected override async Task OnInitializedAsync()
+    {
         await TaskService.CarryOverIncompleteTasksAsync();
-        taskItems = await GetTasksForToday(await Db.GetItemsAsync());
-      
+        await LoadData();
     }
 
-    private async Task<List<TaskItem>> GetTasksForToday(List<TaskItem> items) {
-        await AssignDateForTasksWithoutDateAsync(items);
-        return items.Where(x => x.TaskDateTime.Value.Date == today && !x.IsCompleted).ToList() ?? new List<TaskItem>();
-    }
-
-    private async Task AssignDateForTasksWithoutDateAsync(List<TaskItem> items) {
-        @foreach (var item in items) {
-            if (!item.TaskDateTime.HasValue) {
-                item.TaskDateTime = today;
-                await Db.SaveItemAsync(item);
-            }
-        }
+    private async Task LoadData()
+    {
+        toadyTaskItems = await TaskService.GetTasksForToday();
+        allTaskItems = await TaskService.GetAllIncompleteTasks();
     }
 
     private async Task HandleTaskCompleted(TaskItem completedTask)
     {
         completedTask.CompletionDateTime = DateTime.Now;
         completedTask.IsCompleted = true;
-        await Db.SaveItemAsync(completedTask);
+        await TaskService.SaveTaskAsync(completedTask);
         Snackbar.DisplaySuccessSnackBar();
-        await OnInitializedAsync();
+        await LoadData();
     }
-
-
-
 }

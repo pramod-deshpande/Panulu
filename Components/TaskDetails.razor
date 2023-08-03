@@ -2,44 +2,53 @@
     <MudCardContent Class="d-flex flex-column">
         <MudText Typo="Typo.body1" Color="Color.Primary">@taskItem.Title</MudText>
         <MudText Typo="Typo.body2">@taskItem.Note</MudText>
-        <MudText Typo="Typo.overline">Task date:@(taskItem.TaskDateTime.HasValue? taskItem.TaskDateTime.Value.ToString("d"): " ")</MudText>
-        <MudText Typo="Typo.overline">Completed on:@taskItem.CompletionDateTime</MudText>
-    </MudCardContent>
-    <MudCardActions>
-        <MudContainer Class="d-flex justify-space-between">
-            <MudButton Variant="Variant.Text" Class="rounded-lg pa-3" OnClick="@(() => Navigation.NavigateTo("/"))" Size=Size.Small Color="Color.Secondary"><MudText Typo="Typo.body2">Revert</MudText></MudButton>
+        <MudText Typo="Typo.overline">Task date:@(taskItem.TaskDateTime.HasValue ? taskItem.TaskDateTime.Value.ToString("d") : " ")</MudText>
+            <MudText Typo="Typo.overline">Completed on:@taskItem.CompletionDateTime</MudText>
+        </MudCardContent>
+        <MudCardActions>
+            <MudContainer Class="d-flex justify-space-between">
+                <MudButton Variant="Variant.Text" Class="rounded-lg pa-3" OnClick="HandleRevertButton" Size=Size.Small Color="Color.Secondary"><MudText Typo="Typo.body2">Revert</MudText></MudButton>
                 <MudButton Variant="Variant.Text" Class="rounded-lg pa-3" OnClick="HandleDeleteButton" Size="Size.Small" Color="Color.Error"><MudText Typo="Typo.body2">Delete</MudText></MudButton>
-        </MudContainer>
-    </MudCardActions>
-</MudCard>
+            </MudContainer>
+        </MudCardActions>
+    </MudCard>
 
 
 
-    @code{
+    @code {
     [Parameter]
     public TaskItem taskItem { get; set; }
-
 
     [Parameter]
     public EventCallback<TaskItem> OnTaskDeleted { get; set; }
 
+    [Parameter]
+    public EventCallback<TaskItem> OnTaskReverted { get; set; }
 
-    [Inject] 
+    [Inject]
     private IDialogService DialogService { get; set; }
 
-    private async Task HandleDeleteButton() {
-        bool? result = await DialogService.ShowMessageBox(
-            "Confirm Deletion",
-            $"Delete the task \"{taskItem.Title}\" ?",
-            yesText: "Yes!", cancelText: "Cancel");
-        if (result.HasValue && result.Value)
-        {
+    private async Task HandleDeleteButton()
+    {
+        if (await DisplayDialog("Delete the task"))
             await OnTaskDeleted.InvokeAsync(taskItem);
-        }
     }
 
 
+    private async Task HandleRevertButton()
+    {
+        if (await DisplayDialog("Revert the task"))
+            await OnTaskReverted.InvokeAsync(taskItem);
+    }
 
+    private async Task<bool> DisplayDialog(string dialogMessage)
+    {
+        bool? result = await DialogService.ShowMessageBox(
+           "Confirm Deletion",
+           $"{dialogMessage} \"{taskItem.Title}\" ?",
+           yesText: "Yes!", cancelText: "Cancel");
+        return result.HasValue ? result.Value: false;
+    }
 
 
 }
