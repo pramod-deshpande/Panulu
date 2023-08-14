@@ -18,7 +18,7 @@
 
     protected override async Task OnInitializedAsync() {
         if (!string.IsNullOrWhiteSpace(Id)) {
-            var result = await Db.GetItemAsync(int.Parse(Id));
+            var result = await TaskService.GetTaskItemAsync(int.Parse(Id));
             if (result != null)
                 taskItem = result;
         }
@@ -30,7 +30,7 @@
     private async Task OnSubmit() {
         taskItem.CreationDateTime = DateTime.Now;
         taskItem.IsCompleted = false;
-        var result = await Db.SaveItemAsync(taskItem);
+        await TaskService.SaveTaskAsync(taskItem);
         taskItem = new();
         Snackbar.DisplayInfoSnackbar();
         navigation.NavigateTo("/");

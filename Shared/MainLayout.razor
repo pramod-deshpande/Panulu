@@ -13,19 +13,19 @@
                              ToggledIcon="@Icons.Material.Outlined.LightMode" ToggledColor="Color.Warning" ToggledTitle="On" />
     </MudToolBar>
     <MudAppBar Bottom Fixed Class="border-double border-t mud-border-secondary">
-        <NavMenu/>
-    </MudAppBar>
-    <MudMainContent Class="pt-1">
-        <div style="margin:0px; flex: 1 1 auto; padding-bottom: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/8); transition: margin 225ms cubic-bezier(0,0,.2,1) 0ms;">
-            <MudContainer MaxWidth="MaxWidth.Medium" Class="pb-16" >
-                @Body
-            </MudContainer>
-        </div>
-    </MudMainContent>
-</MudLayout>
+         <NavMenu />
+     </MudAppBar>
+     <MudMainContent Class="pt-1">
+         <div style="margin:0px; flex: 1 1 auto; padding-bottom: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/8); transition: margin 225ms cubic-bezier(0,0,.2,1) 0ms;">
+             <MudContainer MaxWidth="MaxWidth.Medium" Class="pb-16">
+                 @Body
+             </MudContainer>
+         </div>
+     </MudMainContent>
+ </MudLayout>
 
 
-@code{
+ @code {
 
     private bool _isDarkMode;
 
