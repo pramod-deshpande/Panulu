@@ -1,16 +1,14 @@
-﻿<MudCard Outlined="true" Class="my-5">
+﻿<MudCard Class=" rounded-lg my-5">
     <MudCardContent Class="d-flex flex-column">
-        <MudText Typo="Typo.body1" Color="Color.Primary">@taskItem.Title</MudText>
+        <MudText Typo="Typo.body1" Color="Color.Primary"><strong>@taskItem.Title</strong> </MudText>
         <MudText Typo="Typo.body2">@taskItem.Note</MudText>
-        <MudText Typo="Typo.overline">Task date:@(taskItem.TaskDateTime.HasValue ? taskItem.TaskDateTime.Value.ToString("d") : " ")</MudText>
-            <MudText Typo="Typo.overline">Completed on:@taskItem.CompletionDateTime</MudText>
-        </MudCardContent>
-        <MudCardActions>
+        <MudText Typo="Typo.caption"> Task date: <em>@(taskItem.TaskDateTime.HasValue ? taskItem.TaskDateTime.Value.ToString("d") : " ")</em></MudText>
+        <MudText Typo="Typo.caption"> Completed on: <em> @taskItem.CompletionDateTime.ToString("d")</em></MudText>
             <MudContainer Class="d-flex justify-space-between">
                 <MudButton Variant="Variant.Text" Class="rounded-lg pa-3" OnClick="HandleRevertButton" Size=Size.Small Color="Color.Secondary"><MudText Typo="Typo.body2">Revert</MudText></MudButton>
                 <MudButton Variant="Variant.Text" Class="rounded-lg pa-3" OnClick="HandleDeleteButton" Size="Size.Small" Color="Color.Error"><MudText Typo="Typo.body2">Delete</MudText></MudButton>
             </MudContainer>
-        </MudCardActions>
+        </MudCardContent>
     </MudCard>
 
 
@@ -44,10 +42,10 @@
     private async Task<bool> DisplayDialog(string dialogMessage)
     {
         bool? result = await DialogService.ShowMessageBox(
-           "Confirm Deletion",
+           "Confirm Action",
            $"{dialogMessage} \"{taskItem.Title}\" ?",
            yesText: "Yes!", cancelText: "Cancel");
-        return result.HasValue ? result.Value: false;
+        return result.HasValue ? result.Value : false;
     }
 
 

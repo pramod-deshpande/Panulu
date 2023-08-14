@@ -2,11 +2,8 @@
 
 <Heading Title="Monthly View"></Heading>
 
-t
 
-
-
-<MudCalendar ShowDatePicker=true ShowPrevNextButtons="false" ShowWeek=false Height="400" Outlined Elevation="0" View="CalendarView.Month" ShowDay="false" Items="CalendarItems" CellClicked="CellClicked">
+<MudCalendar ShowDatePicker=true ShowPrevNextButtons="false" ShowWeek=false Height="400"  View="CalendarView.Month" ShowDay="false" Items="CalendarItems" CellClicked="CellClicked">
      <MonthTemplate>
          <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Color="Color.Secondary" Size="Size.Small" />
      </MonthTemplate>
@@ -24,9 +21,9 @@ t
     @foreach (var taskItem in tasks)
     {
         <MudItem xs="12" sm="8" md="6" lg="12">
-            <MudCard Class="card my-3 py-3" Elevation="0" Outlined>
+            <MudCard Class="rounded-lg my-3 py-3">
              <MudContainer Class="d-flex flex-column justify-center gap-2">
-                 <MudLink OnClick="@(()=> Navigation.NavigateTo($"/task/{taskItem.Id}"))" Typo="Typo.body1">@taskItem.Title</MudLink>
+                    <MudLink OnClick="@(()=> Navigation.NavigateTo($"/task/{taskItem.Id}"))" Typo="Typo.body1"><strong>@taskItem.Title</strong></MudLink>
                  <MudText Typo="Typo.body2">@taskItem.Note</MudText>
              </MudContainer>
          </MudCard>
@@ -81,7 +78,7 @@ t
     private async Task<List<TaskItem>> GetTasksByDateAsync(DateTime dateTime)
     {
         var tasks = await GetTaskItemsAsync();
-        return tasks.Where(x => x.TaskDateTime?.Date == dateTime.Date).ToList();
+        return tasks.Where(x => x.TaskDateTime?.Date == dateTime.Date && !x.IsCompleted).ToList();
     }
 
 }

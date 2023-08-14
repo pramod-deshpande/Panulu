@@ -1,28 +1,14 @@
 ﻿
-<style>
 
-    .style-link {
-        transition: all 0.4s ease-in-out;
-    }
-
-
-        .style-link:hover {
-            transform: scale(1.1);
-        }
-
-    .card {
-        border: 1px solid @GenerateRandomDarkColor();
-    }
-</style>
 
 
 <MudGrid Spacing="1" Justify="Justify.Center">
 
     <MudItem xs="12" sm="8" md="6" lg="12">
-        <MudCard Class="card my-3 py-3" Elevation="0" Outlined>
+        <MudCard Class="my-3 py-3 rounded-lg"   >
             <MudContainer Class="d-flex gap-2">
                 <div class="d-flex flex-column justify-center gap-2">
-                    <MudLink OnClick="@(()=> Navigation.NavigateTo($"/task/{taskItem.Id}"))" Typo="Typo.body1">@taskItem.Title</MudLink>
+                    <MudLink OnClick="@(()=> Navigation.NavigateTo($"/task/{taskItem.Id}"))" Typo="Typo.body1"><strong>@taskItem.Title</strong></MudLink>
                     <MudText Typo="Typo.body2">@taskItem.Note</MudText>
                 </div>
                
